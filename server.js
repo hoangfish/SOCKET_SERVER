@@ -6,23 +6,21 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
-
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
 
-   const token = socket.handshake.query.token;
-    console.log("Token from client:", token);
+  const token = socket.handshake.query.token;
+  console.log("Token from client:", token);
 
-    if (token !== "123") {
-        console.log("Invalid token, disconnecting");
-        socket.disconnect(true);
-        return;
-    }
+  if (token !== "123") {
+    console.log("Invalid token, disconnecting");
+    socket.disconnect(true);
+    return;
+  }
 
-
-  socket.on("room:status", (roomId) => {
-    console.log("Room was booked:",roomId);
-    io.emit("room:status:changed", roomId);
+  socket.on("room:status", (data) => {
+    console.log("Room status changed:", data);
+    io.emit("room:status:changed", data);
   });
 
   socket.on("disconnect", () => {
