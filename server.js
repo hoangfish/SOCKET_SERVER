@@ -18,9 +18,9 @@ io.on("connection", (socket) => {
     return;
   }
 
-  socket.on("room:status", (data) => {
-    console.log("Room status changed:", data);
-    io.emit("room:status:changed", data);
+  socket.on("room:status", (roomId) => {
+    console.log("Room status changed:", roomId);
+    io.emit("room:status:changed", roomId);
   });
 
   socket.on("disconnect", () => {
